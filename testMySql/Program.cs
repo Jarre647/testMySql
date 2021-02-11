@@ -20,10 +20,11 @@ namespace testMySql
                 Password = "admin",
                 SslMode = MySqlSslMode.Required
             };
+            var stopwatch = new Stopwatch();
             while (true)
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
-                    var stopwatch = new Stopwatch();
+
                     Logger.Info("Opening connection");
                     stopwatch.Start();
                     try
@@ -33,7 +34,6 @@ namespace testMySql
                         using (var command = conn.CreateCommand())
                         {
                             command.CommandText = "SELECT field FROM table limit 1;";
-
                             using (var reader = await command.ExecuteReaderAsync())
                             {
                                 while (await reader.ReadAsync())
@@ -55,6 +55,7 @@ namespace testMySql
                     var ts = stopwatch.Elapsed;
                     var elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
                     Logger.Info(elapsedTime);
+                    stopwatch.Reset();
                     await Task.Delay(TimeSpan.FromSeconds(2));
                 }
         }
