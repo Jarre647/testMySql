@@ -20,10 +20,10 @@ namespace testMySql
                 Password = "admin",
                 SslMode = MySqlSslMode.Required
             };
-            var stopwatch = new Stopwatch();
             while (true)
                 using (var conn = new MySqlConnection(builder.ConnectionString))
                 {
+                    var stopwatch = new Stopwatch();
                     Logger.Info("Opening connection");
                     stopwatch.Start();
                     try
